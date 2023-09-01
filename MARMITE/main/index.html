@@ -1,0 +1,579 @@
+﻿{% extends 'layout.html' %}
+
+{% block main_body %}
+
+	  <div class="container-full" id="app">
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<div class="col-10">
+					<div class="box bg-primary-light">
+						<div class="box-body d-flex px-0">
+							<div class="flex-grow-1 p-30 flex-grow-1 bg-img dask-bg bg-none-md" style="background-position: right bottom; background-size: auto 100%; background-image: url(../images/svg-icon/color-svg/custom-1.svg)">
+								<div class="row">
+									<div class="col-12 col-xl-7">
+										<h2>欢迎使用Klang 量化 <strong> 我的朋友们</strong></h2>
+
+
+										<p class="text-dark my-10 fs-16">
+											祝您天天 <strong class="text-warning"> 涨涨涨！</strong>
+										</p>
+									</div>
+									<div class="col-12 col-xl-5"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+		
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-10">
+
+					<div class="box mb-15 pull-up">
+						<div>
+							<div class="table-responsive">
+								<table class="table no-border mb-0">
+									<tbody>
+										<tr>
+											<td class="min-w-50">
+												<div class="bg-info-light h-50 w-50 l-h-50 rounded text-center">
+													<span class="icon-Book-open fs-24"><i class="fa fa-calendar-minus-o fs-16" aria-hidden="true"></i>
+												</span></div>
+											</td>
+	
+											<td class="fw-600 fs-16 min-w-150 text-center">
+												<i class="fa fa-fw fa-circle text-light fs-12" v-if="online==0"></i>
+												<i class="fa fa-fw fa-circle text-primary fs-12" v-if="online==1"></i>
+												 链接状态</td>
+											
+											
+											<td class="fw-400 fs-16 min-w-150 text-center" id="connect"><a class="btn btn-flat btn-info">连接服务器</a></td>
+											<td class="fw-400 fs-16 min-w-150 text-center" id="stop_server"><a class="btn btn-flat btn-info">停止服务器</a></td>
+											<td class="fw-600 fs-16 min-w-150 text-center" id="restart_server"><a class="btn btn-flat btn-warning">重启服务器</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="box mb-15 pull-up">
+						<div>
+							<div class="table-responsive">
+								<table class="table no-border mb-0">
+									<tbody>
+										<tr>
+											<td class="min-w-50">
+												<div class="bg-warning-light h-50 w-50 l-h-50 rounded text-center">
+													<span class="icon-Book-open fs-24"><i class="fa fa-calendar-minus-o fs-16" aria-hidden="true"></i>
+												</span></div>
+											</td>
+											<td class="fw-600 fs-16 min-w-150 text-center" v-if="server_count" >
+												<span class="badge badge-pill badge-warning" >{{server_count}}</span> 服务器
+											</td>
+											<td class="fw-600 fs-16 min-w-150 text-center" v-else>
+												<span class="badge badge-pill badge-warning" >等待启动..</span>
+											</td>
+											<td class="fw-600 fs-16 min-w-150 text-center"><i class="fa fa-fw fa-circle text-light fs-12" style="visibility: hidden"></i> 股票数据</td>
+											<td class="fw-600 fs-16 min-w-150 text-center" id="updatedata"><a class="btn btn-flat btn-info">
+												<font color="red" v-if="log_event">更新数据</font>
+												<font v-else>更新数据</font>
+											</a></td>
+											<td class="fw-400 fs-16 min-w-150 text-center" id="downloaddata"><a class="btn btn-flat btn-warning">覆盖全部数据</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-10">
+					
+					<div class="box">
+
+						
+
+					<div class="box-body">
+						<div class="media-list media-list-divided media-list-hover">
+
+
+
+							<!--div class="media align-items-center">
+								<input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-danger" checked="" >
+								<label for="md_checkbox_21" style="margin:0px 0px 0px 0px;min-width: 35px;"></label>	
+								
+							  <span class="badge badge-dot badge-danger"></span>
+
+								<div class="media-body text-truncate">
+									MACD 金叉 
+									<input type="checkbox" id="md_checkbox_211" class="filled-in chk-col-primary" checked="" >
+									<label for="md_checkbox_211" style="margin-left: 50px;"> 	0 轴上方  </label>									 
+								 <span  style="margin-left:30px;">大于：</span><input class=""  type="number" name="number"> 周期
+								</div>
+							  <div class="fc-right">
+								<div class="c-inputs-stacked">
+									<input name="group4" type="radio" id="radio_7"  class="radio-col-primary">
+									<label for="radio_7" style="padding-left: 22px;margin-right: 8px;">日</label>
+									<input name="group4" type="radio" id="radio_9"  class="radio-col-danger">
+									<label for="radio_9" style="padding-left: 22px;margin-right: 8px;">周</label>
+									<input name="group4" type="radio" id="radio_10" class="radio-col-info">
+									<label for="radio_10" style="padding-left: 22px; ">月</label>
+								</div>
+							</div>
+							</div-->
+
+
+							<template id="plugin_html" v-if="plugin_show">
+						
+							</template>
+
+						</div>
+
+					</div><!--box-body-->
+				</div><!--box-->
+
+
+					
+					 
+
+					<div class="box">
+						<div class="box-header with-border">
+						
+							<div class="demo-checkbox">
+								<input type="checkbox" id="md_checkbox_code" class="chk-col-success" v-model="runconfs.showcode">
+								<label for="md_checkbox_code"><h4 class="box-title">显示源代码</h4></label>		
+								<input type="checkbox" id="md_klang_server" class="chk-col-success" v-model="runconfs.klangserver">
+								<label for="md_klang_server"><h4 class="box-title">远程运行</h4></label>	
+
+								<input type="checkbox" id="md_klang_date" class="chk-col-success" v-model="runconfs.klangdate">
+								<label for="md_klang_date" style="margin-left: 10px;margin-right: 5px; min-width: 40px;width:auto;" ><h4 class="box-title">复盘日期</h4></label>
+								<input class="filled-in chk-col-success"  type="text" v-if="runconfs.klangdate" v-model="runconfs.inputdate">	
+
+
+							</div>
+		  
+							<textarea rows="15" class="form-control" v-if="runconfs.showcode" v-model="sourcecode"></textarea>
+						</div>
+						<div class="box-footer text-end">
+							<div class="spinner-border spinner-border-sm text-primary" role="status" v-if="work" style="margin-right:15px;">
+								<span class="visually-hidden">.</span>
+							</div>
+							<span>{{countdown}}</span></span><span v-if="runcode"> - {{runcode}}</span>
+							<a  class="btn btn-danger" style="margin-left:5px;" id="run">
+							  运行
+							</a>
+						</div>
+					</div>
+
+					<div class="box">
+					   <div class="box-body">
+						<div class="table-responsive"></div>
+
+						<table class="table table-bordered mb-0">
+						<thead>
+						<tr>
+						<th scope="col">#</th>
+						<th scope="col">name</th>
+						<th scope="col">code</th>
+						<th scope="col">值</th>
+						<th scope="col">流通值(亿)</th>
+						<th scope="col">板块</th>
+						<th scope="col">概念板块</th>
+						
+						</tr>
+						</thead>
+						 <tbody>
+							<tr v-for="(item,index) in result" >
+							<th scope="row" >{{index+1}}</th>
+							<td><a v-bind:href="'https://klang.org.cn/kline.html?code='+item.code" target=_blank @click="openbrowser($event)">{{item.name}}</a></td>
+							<td><font color=blue><a v-bind:href="'https://klang.org.cn/kline.html?code='+item.code" target=_blank @click="openbrowser($event)">{{item.code}}</a></font></td>
+							<td>{{item.value}}</td>
+							<td>{{item.hqltsz}}</td>
+							<td>{{item.tdxbk}}</td>
+							<td>{{item.tdxgn}}</td>
+							
+							</tr>
+							</tbody>
+						</table> 
+					    </div> <!--box-body-->
+					</div>
+
+					</div><!--box-->	
+
+
+				</div><!--col-12-->
+				
+			 </div>
+		</section>
+		<!-- /.content -->
+	  </div>
+
+
+ {% endblock %}
+
+ {% block externjs %}
+
+ <script>
+   $(document).ready(async function(){
+	  
+	   await getplugin();
+   })
+ </script>
+
+<script>
+		const {shell} = require('electron')
+		
+		
+	    iohost = "http://127.0.0.1:9088/user"
+	    //iohost = "http://192.168.1.20:9088/user"
+	   
+		const VueApp = {
+		  data() {
+			  return {
+				  online:0,
+				  work:0,
+				  toask:"",			
+				  result:[],
+				  server_count:0,
+				  log_event:0,
+				  log_tid:"",
+				  pages:{
+					page:[],
+					curnum:0,
+					pagesize:20,
+					pagenums:[],
+				  },
+				  sourcelist:{
+					 
+				},
+				runconfs:{
+					showcode:false,
+					klangserver:false,
+					klangdate:false,
+					inputdate:""
+				},				
+				sourcecode:"",
+				runcode:"",
+				countdown:"",
+				exec_code:[],
+				plugin_show:false
+				 
+			  }
+		  },
+	  
+		 async created() {
+			await getdefaultconfs();
+		  },
+  
+		  async mounted () {
+
+			var today = new Date();
+			this.runconfs.inputdate = today.toLocaleDateString().replaceAll("/","-");
+			this.make_code()
+		  },
+		  methods: {
+
+
+			openbrowser:function(event){
+				console.log(event);
+				url = event.target.href
+				event.preventDefault();
+				
+				shell.openExternal(url);
+			},
+			make_code(){
+				//"macd","turn", "vol","ma30","volatility"
+				var code = ""
+				var condition = "if True "
+
+				code += "PROGRESS(3);\n";
+
+				if (this.runconfs.klangdate == true){
+
+					code += "date('2021-01-01','" + this.runconfs.inputdate +"')\n";
+				}
+			 
+				 
+				 
+
+				var that = this;
+
+				exec_codes = Object.values(this.exec_code)
+				
+				exec_codes.forEach(function(item){
+						
+					eval(item)
+				})
+
+				//condition += ":\n" +
+				code += "\nDISPLAY(C);\n";
+				
+				this.sourcecode = code 
+
+			},
+			reset_logevent:function(){
+				this.log_event = 0
+				this.log_tid   = "";
+			}
+		  },
+		  watch:{
+
+			log_event:function(newval,old){
+
+				if (this.log_tid != ""){
+					//清除上一次timeout，
+					clearTimeout(this.log_tid)
+				}
+				//保留最后一次timeout即可，也就是事件完成后必须恢复成默认值
+				this.log_tid = setTimeout(this.reset_logevent,3000)
+			},
+			"runconfs.klangdate":function(newval,old){
+				var today = new Date();
+			    this.runconfs.inputdate = today.toLocaleDateString().replaceAll("/","-");
+				this.make_code()
+
+			},
+			"runconfs.inputdate":function(newval,old){
+				this.make_code()
+			},
+  
+			"runconfs.klangserver":function(newval,old){
+				if (this.runconfs.klangserver == true){
+					iohost = "https://klang.org.cn:8099/user";
+
+				} else {
+					iohost = "http://127.0.0.1:9088/user"
+				}
+
+				newconnect(iohost)
+				vue.$data.online = 0
+			}
+
+		  }
+		}//VueApp
+	
+		
+  
+
+		var minute,second;// 分 秒
+ 
+		function start_count()//开始
+		{
+			minute=second=0;//初始化
+			int=setInterval(timer_count,1000);
+		}
+
+		function timer_count()//计时
+		{
+			second = second+1;
+
+
+			if(second>=60)
+			{
+				second=0;
+				minute=minute+1;
+			}
+
+
+			vue.$data.countdown = minute +'分'+second+'秒';
+
+		}
+
+		function stop_count()//暂停
+		{
+			window.clearInterval(int);
+		}
+
+
+		var socket;
+		function newconnect(host){
+			socket = io(host)
+			socket.on("connect",(data)=>{
+				console.log("connect")
+				vue.$data.online = 1
+			})
+			socket.on("disconnect",(data)=>{
+				console.log("disconnect")
+				vue.$data.online = 0
+				vue.$data.server_count = 0
+				socket.connect()
+			})
+
+			socket.on("u_done",data=>{
+				console.log("u_done",data)
+				vue.$data.work = 0
+				vue.$data.runcode = ""
+				stop_count();
+
+			})
+
+			socket.on("u_info",data=>{
+				console.log("u_info",data,data.servers.length)
+				vue.$data.server_count = data.servers.length
+
+			})
+
+			socket.on("u_ret",data=>{
+				console.log("u_ret",data)
+				if (data.retcode=="ERROR"){
+					alert("系统正在执行其他任务，请稍等");
+				} 
+				if (data.retcode=="DISPLAY"){
+					code = data.code.replace(".","")
+					hqltsz = data.hqltsz.toFixed(2)
+					tdxbk = data.tdxbk
+					tdxgn = data.tdxgn
+					
+
+					value = data.value
+						
+					vue.$data.result.push({name:data.name,code:code,value:value,hqltsz:hqltsz,tdxbk:tdxbk,tdxgn:tdxgn})
+								
+				}  
+
+				if (data.retcode=="PROGRESS"){
+					code = data.code.replace(".","")
+					vue.$data.runcode = code 
+
+				}
+						   
+			})
+
+
+
+		} //new connect
+
+
+   
+
+
+  
+		function send_task(){
+				vue.$data.result = []
+				 
+				vue.$data.work = true
+
+				socket.emit("uexec_event",{content:vue.$data.sourcecode,loop:true});
+		}
+
+		
+		function run_exec (event) {
+				  
+			
+				  console.log(vue.$data.online)
+				  
+				  if (vue.$data.work){
+					vue.$data.toask.content = "我在计算中，你别总点我"
+					vue.$data.toask.state = 1
+					return 
+				  }
+
+				  if (vue.$data.server_count == 0){
+					alert("等待服务器启动,请稍后")
+					return 
+				  }
+  
+				  send_task();
+				  start_count();
+				 
+		}
+
+		function appinit(message){
+
+			plugindata = JSON.parse(message)
+
+			console.log(plugindata)
+			
+			let i,length = plugindata.length;
+
+			// 1. html
+			htmls = []
+			for (i=0;i<length;i++)
+			{
+				htmls.push(plugindata[i].html.join("").format(plugindata[i].id,plugindata[i].name))
+			}
+			
+
+			htmls.forEach(function(item){
+				document.querySelector('#plugin_html').innerHTML += item
+			})
+	
+
+			window.app  = Vue.createApp(VueApp)
+			window.vue  =  app.mount('#app')
+
+			// 2. sourcelist
+			for (i=0;i<length;i++)
+			{ 
+				sourceconf = plugindata[i].sourceconf
+				sourceconf.code = sourceconf.code.join("").format(plugindata[i].id)
+			
+
+				vue.$data.sourcelist[plugindata[i].id] = sourceconf
+			}
+
+			// 3. code
+			for (i=0;i<length;i++)
+			{ 
+				exec_code = plugindata[i].exec_code.join("").format(plugindata[i].id)
+				vue.$data.exec_code[plugindata[i].id] = exec_code
+			}
+			// 4. watch
+			for (i=0;i<length;i++)
+			{ 
+				plugindata[i].watch.forEach(function(name){
+					vue.$watch("sourcelist." + plugindata[i].id + "." + name,function(newVal,oldVal){
+						vue.make_code()
+					})
+				})
+			}
+
+
+
+
+			newconnect(iohost)
+			
+			
+			vue.$data.plugin_show = 1
+
+			var run = document.querySelector('#run');
+			var reconnect = document.querySelector('#connect');
+			var updatedata = document.querySelector('#updatedata');
+			var downloaddata = document.querySelector('#downloaddata');
+			var restart_server = document.querySelector('#restart_server');
+			var stop_server = document.querySelector('#stop_server');
+
+			run.onclick = run_exec
+			
+			
+			updatedata.onclick = function(event){
+				socket.emit("u_cmd_event",{content:"UPDATEALL"});
+			}
+	
+			downloaddata.onclick = function(event){
+				download_data_zip();
+			}
+			reconnect.onclick = function(event){
+				newconnect(iohost)
+			}
+			restart_server.onclick = function(event){
+				reset_server(); //renderer.js
+			}
+			stop_server.onclick = function(event){
+				stop_server_func(); //renderer.js
+			}
+			
+
+		}
+
+		window.appinit = appinit
+  </script>
+ 
+ {% endblock %}

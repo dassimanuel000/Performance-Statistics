@@ -1,0 +1,222 @@
+
+{% extends 'layout.html' %}
+
+{% block main_body %}
+
+
+<div class="container-full" id="app">
+    <section class="content">
+        <div class="row">
+            <div class="col-10">
+                <div class="box">
+                    <div class="box-body">
+                        <h4 class="box-title">插件管理页面</h4>
+                        <div class="form-group">
+                            <label class="form-label"><a class=".text-info"><i class="mdi mdi-home-outline"></i> </a> - 输入plugin GitHub项目地址, 例如: 
+                                <a href="https://github.com/KlangAlpha/plugins">https://github.com/KlangAlpha/plugins</a>
+                            </label>                  
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="" v-model="plugurl">
+                                <span class="input-group-text" @click="plugindown"><i class="ti-import"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="box mb-15 pull-up" v-for="item in pluginArray">
+                    <div>
+                        <div class="table-responsive">
+                            <table class="table no-border mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="min-w-50">
+                                            <div class="bg-warning-light h-50 w-50 l-h-50 rounded text-center">
+                                                <span class="icon-Book-open fs-24"><i class="fa fa-calendar-minus-o fs-16" aria-hidden="true"></i>
+                                            </span></div>
+                                        </td>
+                                        <td class="fw-600 min-w-170">
+                                            <div class="d-flex flex-column fw-600">
+                                                <a href="#" class="text-dark hover-primary mb-1 fs-16">《{{item.name}}》</a>
+                                                <span class="text-fade">ID:{{item.id}}</span>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div>
+                            <ul class="todo-list ui-sortable">
+
+
+                                  <li class="b-1 p-0 mb-15">
+                                    <div class="position-relative p-20">
+                                        <!-- drag handle -->
+                                        <div class="handle handle2 ui-sortable-handle" style="margin-left:10px;"></div>
+                                        <!-- checkbox -->
+
+                                        <!-- todo text -->
+                                        <span class="text-line fs-18" style="margin:30px;">{{item.description}}</span>
+                                        <!-- General tools such as edit or delete-->
+                                        <div class="pull-right d-block text-dark flexbox">
+                                            <a class="btn btn-light" @click="handler_enable(item,1)" v-if="item.enable==0">启用</a>
+                                            <a class="btn btn-warning" @click="handler_enable(item,0)" v-else>停用</a>
+
+                                          <!--a href="" data-bs-toggle="tooltip" data-container="body" title="" data-bs-original-title="Edit"><i class="fa fa-edit"></i></a-->
+                                          <a class="btn btn-danger" @click="remove(item)"><i class="fa fa-trash-o"></i></a>
+                                        </div>
+                                        <div class="mt-5 ms-50 ps-5">网址: <a :href="item.url">{{item.url}}</a></div>
+                                        <div class="mt-5 ms-50 ps-5"><em></em></div>
+                                      </div>
+                                  </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+      </div>
+
+
+    </section>
+
+    <div class="modal" id="modal-center" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">正在安装插件</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="close"></button>
+            </div>
+            <div class="modal-body" v-html="installinfo">
+              
+            </div>
+            <div class="modal-footer modal-footer-uniform">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="close">完成</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id="modal-center-remove" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">删除插件</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="close1"></button>
+            </div>
+            <div class="modal-body" >
+              警告：删除后将无法恢复。
+            </div>
+            <div class="modal-footer modal-footer-uniform">
+              <button type="button" class="btn btn-warning" data-bs-dismiss="modal" @click="close1">取消</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="remove1">继续</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+     
+{% endblock %}
+
+{% block externjs %}
+
+
+<script>
+
+    $(document).ready(async function(){
+
+        apihost="https://www.klang.org.cn"
+  
+    
+ 
+	  
+	  
+
+        const VueApp = {
+            data() {
+                return {
+                    pluginArray:[],
+                    plugurl:"",
+                    installinfo:"<p>正在安装,请稍等</p>",
+                    delete_obj:"",
+
+                }
+            },
+
+            created() {
+                
+            },
+
+            mounted () {
+                var that = this
+ 
+            },
+            methods: {
+                configs(e){
+
+                },
+                close(){
+                    this.installinfo = "<p>正在安装,请稍等</p>"
+                    $("#modal-center").hide()
+                    window.location.reload()
+                },
+                close1(){
+                    $("#modal-center-remove").hide()
+                    window.location.reload()
+                },
+                remove1(){
+                    var  that = this
+                    ipcRenderer.invoke("removeplugin",JSON.stringify(that.delete_obj))
+                    setTimeout(this.close1,1000);
+                },
+
+                remove(item){
+                     this.delete_obj = item
+                    $("#modal-center-remove").show()
+                },
+                async plugindown(){
+                    //renderer.js
+                    if (this.plugurl == "" ){
+                        alert("请输入plugin github地址")
+                        return 
+                    }
+                    downplugin(this.plugurl)
+                    $("#modal-center").show()
+
+                },
+                async handler_enable(item,val){
+                    item.enable = val
+                    await ipcRenderer.invoke('savepluginfile',JSON.stringify(item)); 
+                }
+            }
+        }//VueApp
+        window.vue = Vue.createApp(VueApp).mount('#app')
+
+        function plugininit(message){
+            plugindata = JSON.parse(message)
+ 
+            var i,length = plugindata.length;
+
+            // 1. html
+            
+            for (i=0;i<length;i++)
+            {
+                vue.$data.pluginArray.push(plugindata[i])
+            }
+        }
+        window.plugininit = plugininit
+
+        await getplugindir();
+    })
+</script>
+
+{% endblock %}

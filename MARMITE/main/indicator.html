@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-12">
+      
+
+         <template id="plugin_html" v-if="plugin_show">
+            
+         </template>
+        
+         
+
+        <div class="box">
+            <div class="box-header with-border">
+            
+                <div class="demo-checkbox">
+                    <input type="checkbox" id="md_checkbox_code" class="chk-col-success" v-model="runconfs.showcode">
+                    <label for="md_checkbox_code"><h4 class="box-title">显示源代码</h4></label>		
+                    <input type="checkbox" id="md_klang_server" class="chk-col-success" v-model="runconfs.klangserver">
+                    <label for="md_klang_server"><h4 class="box-title">远程运行</h4></label>	
+
+                    <input type="checkbox" id="md_klang_date" class="chk-col-success" v-model="runconfs.klangdate">
+                    <label for="md_klang_date" style="margin-left: 10px;margin-right: 5px; min-width: 40px;width:auto;" ><h4 class="box-title">复盘日期</h4></label>
+                    <input class="filled-in chk-col-success"  type="text" v-if="runconfs.klangdate" v-model="runconfs.inputdate">	
+
+
+                </div>
+
+                <textarea rows="15" class="form-control" v-if="runconfs.showcode" v-model="sourcecode"></textarea>
+            </div>
+            <div class="box-footer text-end">
+                <div class="spinner-border spinner-border-sm text-primary" role="status" v-if="work" style="margin-right:15px;">
+                    <span class="visually-hidden">.</span>
+                </div>
+                <span>{{countdown}}</span></span><span v-if="runcode"> - {{runcode}}</span>
+                <a  class="btn btn-danger" style="margin-left:5px;" id="run">
+                  运行
+                </a>
+            </div>
+        </div>
+
+        <div class="box">
+           <div class="box-body">
+            <div class="table-responsive"></div>
+
+            <table class="table table-bordered mb-0">
+            <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">name</th>
+            <th scope="col">code</th>
+            <th scope="col">值</th>
+            <th scope="col">流通值(亿)</th>
+            <th scope="col">板块</th>
+            <th scope="col">概念板块</th>
+            
+            </tr>
+            </thead>
+             <tbody>
+                <tr v-for="(item,index) in result" >
+                <th scope="row" >{{index+1}}</th>
+                <td><a v-bind:href="'https://klang.org.cn/kline.html?code='+item.code" target=_blank @click="openbrowser($event)">{{item.name}}</a></td>
+                <td><a v-bind:href="'https://gu.qq.com/'+item.code" target=_blank @click="openbrowser($event)"><font color=blue>{{item.code}}</font></a></td>
+                <td>{{item.value}}</td>
+                <td>{{item.hqltsz}}</td>
+                <td>{{item.tdxbk}}</td>
+                <td>{{item.tdxgn}}</td>
+                
+                </tr>
+                </tbody>
+            </table> 
+            </div> <!--box-body-->
+        </div>
+
+        </div><!--box-->	
+
+
+    </div><!--col-12-->
