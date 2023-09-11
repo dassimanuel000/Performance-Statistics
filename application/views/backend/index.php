@@ -85,6 +85,8 @@ $running_year   = $this->db->get_where('settings', array('type' => 'session'))->
 	<!-- Style-->  
 	<link rel="stylesheet" href="<?php echo base_url(); ?>ui/css/style.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>ui/css/skin_color.css">	
+	<link rel="stylesheet" href="<?php echo base_url(); ?>ui/css/custom.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body class="hold-transition light-skin sidebar-mini theme-primary fixed">
@@ -229,7 +231,10 @@ $running_year   = $this->db->get_where('settings', array('type' => 'session'))->
 	
 	<!-- EduAdmin App -->
 	<script src="<?php echo base_url(); ?>ui/js/template.js"></script>
-	
+ 
+	<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+
 	
 
 </body>

@@ -40,7 +40,7 @@
                                                  <div class="col-sm-12">
                                                      <input type="text" class="form-control" name="name"  required/>
                                                  </div>
-                                             </div>sds
+                                             </div>
 
                                              <div class="form-group">
                                                  <label class="col-md-12" for="example-text"><?php echo get_phrase('nick_name'); ?></label>

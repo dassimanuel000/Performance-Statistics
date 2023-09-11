@@ -17,6 +17,22 @@
                     <tbody>
     
                     <?php $counter = 1; $students =  $this->db->get_where('student', array('class_id' => $class_id))->result_array();
+                      
+                    if (count($students) < 1) {?>  
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><img src="https://i.ibb.co/ZcRyGGJ/email-2.png"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php } else {
+                        # code...
+                    
                     foreach($students as $key => $student):?>         
                         <tr>
                             <td><?php echo $counter++;?></td>
@@ -38,6 +54,8 @@
                            
         					</td>
                         </tr>
-    <?php endforeach;?>
+    <?php endforeach;
+                    }
+                    ?>
                     </tbody>
                 </table>
