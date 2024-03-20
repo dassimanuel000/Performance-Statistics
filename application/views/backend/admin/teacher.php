@@ -5,13 +5,13 @@
         <div class="content-header">
             <div class="d-flex align-items-center">
                 <div class="me-auto">
-                    <h3 class="page-title"><?php echo get_phrase('admission_form'); ?></h3>
+                    <h3 class="page-title"><?php echo get_phrase('new_teacher'); ?></h3>
                     <div class="d-inline-block align-items-center">
                         <nav>
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
                                 <li class="breadcrumb-item" aria-current="page"><?php echo get_phrase('admin'); ?></li>
-                                <li class="breadcrumb-item active" aria-current="page"><?php echo get_phrase('admission_form'); ?></li>
+                                <li class="breadcrumb-item active" aria-current="page"><?php echo get_phrase('new_teacher'); ?></li>
                             </ol>
                         </nav>
                     </div>
@@ -35,7 +35,7 @@
                                     <div class="panel-heading"><?php echo get_phrase('new_teacher'); ?>
                                         <div class="pull-right"><a href="#" data-perform="panel-collapse"><i class="fa fa-plus"></i>&nbsp;&nbsp;ADD NEW TEACHER HERE<i class="btn btn-info btn-xs"></i></a> <a href="#" data-perform="panel-dismiss"></a> </div>
                                     </div>
-                                    <div class="panel-wrapper collapse out" aria-expanded="true">
+                                    <div class="panel-wrapper " aria-expanded="true">
                                         <div class="panel-body">
 
 

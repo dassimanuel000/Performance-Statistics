@@ -1,62 +1,112 @@
-<div class="row">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <div class="container-full">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="d-flex align-items-center">
+                <div class="me-auto">
+                    <h3 class="page-title"><?php echo get_phrase('admission_form'); ?></h3>
+                    <div class="d-inline-block align-items-center">
+                        <nav>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#"><i class="mdi mdi-home-outline"></i></a></li>
+                                <li class="breadcrumb-item" aria-current="page"><?php echo get_phrase('admin'); ?></li>
+                                <li class="breadcrumb-item active" aria-current="page"><?php echo get_phrase('admission_form'); ?></li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
 
-			<div class="col-sm-12">
-				  	<div class="panel panel-info">
-                            <div class="panel-heading"> <i class="fa fa-list"></i>&nbsp;&nbsp;<?php echo get_phrase('list_leave'); ?></div>
-							
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-12">
+                    <div class="box">
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading"> <i class="fa fa-list"></i>&nbsp;&nbsp;<?php echo get_phrase('list_leave'); ?></div>
 
 
-<div class="panel-wrapper in" aria-expanded="true">
-                                <div class="panel-body table-responsive">
- 								<table id="example23" class="display nowrap" cellspacing="0" width="100%">    <thead>
-        <tr>
-            <th><div>#</div></th>
-            <th><div><?php echo get_phrase('employee'); ?></div></th>
-            <th><div><?php echo get_phrase('start_date'); ?></div></th>
-            <th><div><?php echo get_phrase('end_date'); ?></div></th>
-            <th><div><?php echo get_phrase('reason'); ?></div></th>
-            <th><div><?php echo get_phrase('status'); ?></div></th>
-            <th><div><?php echo get_phrase('options'); ?></div></th>
-        </tr>
-    </thead>
-    <tbody>
 
-    <?php $count = 1;
-            $leave = $this->db->get('leave')->result_array();
-            foreach($leave as $key =>$leave): ?>
-   
-            <tr>
-                <td><?php echo $count++;?></td>
-                <td><?php echo $this->db->get_where('teacher',array('teacher_id' => $leave['teacher_id']))->row()->name;?></td>
-                <td><?php echo $leave['start_date'];?></td>
-                <td><?php echo $leave['end_date'];?></td>
-                <td><?php echo substr($leave['reason'], 0, 50) . '...';?></td>
-                <td>
-                
-                <?php if($leave['status'] == 1) 
-                echo '<div class="label label-success">' . get_phrase('approved') . '</div>';
-                if($leave['status'] == 0) 
-                echo '<div class="label label-warning">' . get_phrase('pending') . '</div>';
-                if($leave['status'] == 2) 
-                echo '<div class="label label-danger">' . get_phrase('declined') . '</div>';?>
-                </td>
+                                    <div class="panel-wrapper in" aria-expanded="true">
+                                        <div class="panel-body table-responsive">
+                                            <table id="example23" class="display nowrap" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div>#</div>
+                                                        </th>
+                                                        <th>
+                                                            <div><?php echo get_phrase('employee'); ?></div>
+                                                        </th>
+                                                        <th>
+                                                            <div><?php echo get_phrase('start_date'); ?></div>
+                                                        </th>
+                                                        <th>
+                                                            <div><?php echo get_phrase('end_date'); ?></div>
+                                                        </th>
+                                                        <th>
+                                                            <div><?php echo get_phrase('reason'); ?></div>
+                                                        </th>
+                                                        <th>
+                                                            <div><?php echo get_phrase('status'); ?></div>
+                                                        </th>
+                                                        <th>
+                                                            <div><?php echo get_phrase('options'); ?></div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                <td>
-                
-                <a onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_leave/<?php echo $leave['leave_code'];?>')" class="btn btn-info btn-circle btn-xs"><i class="fa fa-edit"></i></a>
-                <a onclick="confirm_modal('<?php echo base_url();?>admin/leave/delete/<?php echo $leave['leave_code'];?>')" class="btn btn-danger btn-circle btn-xs" style="color:white"><i class="fa fa-times"></i></a>
-                
-                </td>
-            </tr>
+                                                    <?php $count = 1;
+                                                    $leave = $this->db->get('leave')->result_array();
+                                                    foreach ($leave as $key => $leave) : ?>
 
-            <?php endforeach;?>
+                                                        <tr>
+                                                            <td><?php echo $count++; ?></td>
+                                                            <td><?php echo $this->db->get_where('teacher', array('teacher_id' => $leave['teacher_id']))->row()->name; ?></td>
+                                                            <td><?php echo $leave['start_date']; ?></td>
+                                                            <td><?php echo $leave['end_date']; ?></td>
+                                                            <td><?php echo substr($leave['reason'], 0, 50) . '...'; ?></td>
+                                                            <td>
 
-    </tbody>
-</table>
+                                                                <?php if ($leave['status'] == 1)
+                                                                    echo '<div class="label label-success">' . get_phrase('approved') . '</div>';
+                                                                if ($leave['status'] == 0)
+                                                                    echo '<div class="label label-warning">' . get_phrase('pending') . '</div>';
+                                                                if ($leave['status'] == 2)
+                                                                    echo '<div class="label label-danger">' . get_phrase('declined') . '</div>'; ?>
+                                                            </td>
 
+                                                            <td>
+
+                                                                <a onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/edit_leave/<?php echo $leave['leave_code']; ?>')" class="btn btn-info btn-circle btn-xs"><i class="fa fa-edit"></i></a>
+                                                                <a onclick="confirm_modal('<?php echo base_url(); ?>admin/leave/delete/<?php echo $leave['leave_code']; ?>')" class="btn btn-danger btn-circle btn-xs" style="color:white"><i class="fa fa-times"></i></a>
+
+                                                            </td>
+                                                        </tr>
+
+                                                    <?php endforeach; ?>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!----TABLE LISTING ENDS--->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+
+    </div>
 </div>
-			</div>
-			</div>
-			</div>
-			</div>
-            <!----TABLE LISTING ENDS--->

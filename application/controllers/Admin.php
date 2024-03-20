@@ -1,5 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+require 'dompdf/vendor/autoload.php';
+
 
 class Admin extends CI_Controller { 
 
@@ -1594,4 +1599,199 @@ class Admin extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
+
+    
+    function tabulation_sheet ($param1 = null, $param2 = null, $param3 = null){
+
+        
+
+        $page_data['page_name']     = 'tabulation_sheet';
+        $page_data['page_title']    = get_phrase('tabulation_sheet');
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function search_student() {
+                
+        //if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            $output = "";
+            $search = $_GET['search'];
+            ini_set('display_errors', 1);
+
+            if (strlen($search) > 1) {
+                $result = $this->student_model->findStudent($search);
+    
+                if ($result) {
+                    //echo json_encode($result);
+                    if ($result !== null && is_array($result)) {
+                        foreach ($result as $item) {
+                            $output .= '<tr>' .
+                            '<td><span class="col-green"></span></td>' .
+                            '<td><b>' . $item->name . '</b></td>' .
+                            '<td><a href="build_pdf?quart=1&id=' . $item->student_id . '"> '.get_phrase("first quart").' </b></td>' .
+                            '<td><a href="build_pdf?quart=2&id=' . $item->student_id . '">'.get_phrase("second quart").'</b></td>' .
+                            '<td><a href="build_pdf?quart=3&id=' . $item->student_id . '">'.get_phrase("thrid quart").'</b></td>' .
+                            '<td><a href="build_pdf?quart=4&id=' . $item->student_id . '">'.get_phrase("Annual report").'</b></td>' .
+                            '</tr>';
+                        }
+                        echo $output;
+                    } else {
+                        echo "Erreur de requête SQL : ";
+                    }
+                } else {
+                    echo '<div class="col-md-12 alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    Aucune information n a été trouvée.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+                }
+            }else {
+                echo "plus de 03 char s";
+            }
+        } else {
+            echo "Requête non autorisée.";
+        }
+    }
+
+    
+    public function build_pdf() {
+        
+
+
+        $id_student = $_GET['id'];
+
+        $class_id = $this->db->get_where('student', array('student_id' => $id_student))->row()->class_id;
+        $teacher_id  = $this->db->get_where('class', array('class_id' => $class_id))->row()->teacher_id;
+        $quart = in_array($_GET['quart'], array(1, 2, 3)) ? "class_score" . $_GET['quart'] : "exam_score";
+        $result = $this->student_model->getMarksByStudentId($id_student);
+        $output = "";
+                
+        // Define variables
+        $establishmentName = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
+        $currentDate = $this->db->get_where('settings', array('type' => 'session'))->row()->description;
+        $headTeacherName = $this->db->get_where('teacher', array('teacher_id' => $teacher_id))->row()->name;
+        $student_Name = $this->db->get_where('student', array('student_id' => $id_student))->row()->name;
+        $student_class = $this->db->get_where('class', array('class_id' => $class_id))->row()->name;
+        $subjects = array();
+
+        // Subject, grade and comment table
+        if ($result !== null && is_array($result)) {
+            foreach ($result as $item) {
+                $itemSubject = array(
+                    "name" => $item["subject_id"],
+                    "grade" => $item[$quart],
+                    "comment" => $item["comment"],
+                );
+                array_push($subjects, $itemSubject);
+            }
+            echo $output;
+        } else {
+            echo "Erreur de requête SQL : ";
+        }
+
+        // Create the main report table
+        $report = array(
+            "establishment" => $establishmentName,
+            "date" => $currentDate,
+            "student_Name" => $student_Name,
+            "student_class" => $student_class,
+            "quart" => $quart,
+            "teacher" => $headTeacherName,
+            "subjects" => $subjects
+        );
+
+        //echo json_encode($report);
+                
+        
+        // Instanciation de dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+
+        // Début HTML
+        
+        $html = <<<HTML
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Report Card</title>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .report-card-container { width: 100%; max-width: 800px; margin: auto; }
+                .header { text-align: center; }
+                .header img { width: 100px; }
+                table { width: 100%; border-collapse: collapse; }
+                table, th, td { border: 1px solid black; }
+                th, td { padding: 5px; text-align: left; }
+                .footer { margin-top: 20px; }
+                .footer .teacher, .footer .principal { float: left; width: 50%; }
+            </style>
+        </head>
+        <body>
+            <div class="report-card-container">
+                <div class="header">
+                    <h1>{$report['establishment']}</h1>
+                    <h2>Progress Report of Quarterly Exam</h2>
+                    <p>Year: {$report['date']}</p>
+                    <!-- Plus d'informations d'en-tête ici -->
+                </div>
+                
+                <div class="student-info">
+                    <p>Name: {$report['student_Name']}</p>
+                    <p>Class: {$report['student_class']}</p>
+                    <!-- Plus d'informations sur l'étudiant ici -->
+                </div>
+                
+                <table class="grades-table">
+                    <tr>
+                        <th>Subject Name</th>
+                        <th>Grade</th>
+                        <th>Comment</th>
+                    </tr>'
+        HTML;
+                    
+        // Ajout des matières et des notes
+        foreach ($report['subjects'] as $subject) {
+            $html .= '<tr>
+                        <td>'.$subject['name'].'</td>
+                        <td>'.$subject['grade'].'</td>
+                        <td>'.$subject['comment'].'</td>
+                    </tr>';
+        }
+
+        // Fin du HTML
+        $html .= 
+        <<<HTML
+        </table>
+                <div class="footer">
+                    <div class="teacher">
+                        <p>Class Teacher: {$report['teacher']}</p>
+                    </div>
+                    <div class="principal">
+                        <p>Principal: </p>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </body>
+        </html>
+        HTML;
+
+
+        // Charger le contenu HTML
+        $dompdf->loadHtml($html);
+
+        // (Optionnel) Configurer la taille du papier et l'orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Rendu du PDF
+        $dompdf->render();
+
+        // Envoi du PDF au navigateur
+        $dompdf->stream("report_card.pdf", array("Attachment" => false));
+        
+    }
 }
+

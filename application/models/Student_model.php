@@ -168,7 +168,39 @@ class Student_model extends CI_Model {
     }
 
 	
+    /************ds */
+    
+    function findStudent($param2){
+        //$this->db->where('student_id', $param2);
+        /*$this->db->or_where('name', $param2);
+        $this->db->or_where('father_name', $param2);
+        $this->db->or_where('mother_name', $param2);*/
+        $this->db->or_like('name', $param2)
+                ->or_like('place_birth', $param2)
+                ->or_like('father_name', $param2)
+                ->or_like('m_tongue', $param2)
+                ->or_like('mother_name', $param2);
+        $query = $this->db->get('student');
+        if ($query->num_rows() > 0) {
+            return $query->result(); 
+        } else {
+            return array();
+        }
+    }
 
+    
+    public function getMarksByStudentId($studentId) {
+        $this->db->select('*');
+        $this->db->from('mark');
+        $this->db->where('student_id', $studentId);
+        $query = $this->db->get();
+        
+        if ($query->num_rows() > 0) {
+            return $query->result_array(); 
+        } else {
+            return array(); // Retourne un tableau vide si aucun résultat n'est trouvé
+        }
+    }
 
 	
 	
