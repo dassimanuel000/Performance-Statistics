@@ -6,9 +6,9 @@
 			<a class="nav-link" href="javascript:void(0)">FAQ</a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link" href="https://themeforest.net/item/eduadmin-responsive-bootstrap-admin-template-dashboard/29365133" target="_blank">Purchase Now</a>
+			<a class="nav-link" href="" target="_blank">Purchase Now</a>
 		  </li>
 		</ul>
     </div>
-	  &copy; 2022 <a href="https://azienda-solution.com/">Azienda Solutions</a>. All Rights Reserved.
+	  &copy; 2024 <a href="https://azienda-solution.com/">Azienda Solutions</a>. All Rights Reserved.
   </footer>

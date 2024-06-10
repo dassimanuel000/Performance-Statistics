@@ -87,6 +87,17 @@ $running_year   = $this->db->get_where('settings', array('type' => 'session'))->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>ui/css/skin_color.css">	
 	<link rel="stylesheet" href="<?php echo base_url(); ?>ui/css/custom.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const elements = document.querySelectorAll('.hide-menu');
+            elements.forEach(element => {
+                let text = element.childNodes[0].nodeValue.trim();
+                if (text.length > 0) {
+                    element.childNodes[0].nodeValue = text.charAt(0).toUpperCase() + text.slice(1);
+                }
+            });
+        });
+    </script>
 
 </head>
 <body class="hold-transition light-skin sidebar-mini theme-primary fixed">
@@ -235,7 +246,7 @@ $running_year   = $this->db->get_where('settings', array('type' => 'session'))->
 	<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
-	
+    
 
 </body>
  <?php include 'modal.php'; ?>

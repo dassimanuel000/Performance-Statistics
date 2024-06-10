@@ -1672,6 +1672,7 @@ class Admin extends CI_Controller {
         $headTeacherName = $this->db->get_where('teacher', array('teacher_id' => $teacher_id))->row()->name;
         $student_Name = $this->db->get_where('student', array('student_id' => $id_student))->row()->name;
         $student_class = $this->db->get_where('class', array('class_id' => $class_id))->row()->name;
+        $logo = base_url()."uploads/logo.png";
         $subjects = array();
 
         // Subject, grade and comment table
@@ -1697,12 +1698,18 @@ class Admin extends CI_Controller {
             "student_class" => $student_class,
             "quart" => $quart,
             "teacher" => $headTeacherName,
+            "logo" => $logo,
             "subjects" => $subjects
         );
 
         //echo json_encode($report);
-                
+        session_start();
+        $_SESSION['report'] = $report;
+
         
+        header("Location: ".base_url()."print/scolar.php");
+        
+        /*
         // Instanciation de dompdf
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
@@ -1710,48 +1717,49 @@ class Admin extends CI_Controller {
         $dompdf = new Dompdf($options);
 
         // Début HTML
-        
         $html = <<<HTML
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>Report Card</title>
-            <style>
-                body { font-family: Arial, sans-serif; }
-                .report-card-container { width: 100%; max-width: 800px; margin: auto; }
-                .header { text-align: center; }
-                .header img { width: 100px; }
-                table { width: 100%; border-collapse: collapse; }
-                table, th, td { border: 1px solid black; }
-                th, td { padding: 5px; text-align: left; }
-                .footer { margin-top: 20px; }
-                .footer .teacher, .footer .principal { float: left; width: 50%; }
-            </style>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+            <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css">
         </head>
-        <body>
-            <div class="report-card-container">
-                <div class="header">
-                    <h1>{$report['establishment']}</h1>
-                    <h2>Progress Report of Quarterly Exam</h2>
-                    <p>Year: {$report['date']}</p>
-                    <!-- Plus d'informations d'en-tête ici -->
-                </div>
                 
-                <div class="student-info">
-                    <p>Name: {$report['student_Name']}</p>
-                    <p>Class: {$report['student_class']}</p>
-                    <!-- Plus d'informations sur l'étudiant ici -->
-                </div>
-                
-                <table class="grades-table">
-                    <tr>
-                        <th>Subject Name</th>
-                        <th>Grade</th>
-                        <th>Comment</th>
-                    </tr>'
-        HTML;
+        <body class="antialiased">
+        <div class="prose lg:prose-2xl mx-auto my-2 border rounded border-blue-500">
+            <div class="flex flex-nowrap justify-center">
+                <div class="grid grid-rows-auto gap-0">
+                    <!-- School Header Starts-->
+                    <div id="schoolHeader" class="flex justify-around items-center px-3 gap-4">
+                        <img class="w-24  rounded" src="https://via.placeholder.com/150"
+                            alt="school logo">
+
+                        <div class="grid grid-rows-auto gap-1 py-2 text-center rounded ">
+                            <span class="text-3xl font-semibold uppercase">Traiblazers Academy</span>
+                            <span class="text-base">
+                                Motto: School very lenthy motto goes here <br>
+                                School Address with the full street name goes here <br>
+                                Tel: 070xxxxxxxxx, 090xxxxxxxxx <br>
+                            </span>
+                            <span class="text-1xl font-semibold uppercase">Report Sheet</span>
+                        </div>
+
+                        <img class="w-24 rounded" src="https://via.placeholder.com/150"
+                            alt="student photo">
+                    </div>
+                    <!-- School Header Ends-->
+                    <div id="nonAcademicRecord" class="grid grid-cols-12  prose-table:my-0 p-3 gap-1">
                     
+                        <table class="grades-table">
+                            <tr>
+                                <th>Subject Name</th>
+                                <th>Note</th>
+                                <th>Comment</th>
+                            </tr>'
+        HTML;
+                                        
         // Ajout des matières et des notes
         foreach ($report['subjects'] as $subject) {
             $html .= '<tr>
@@ -1765,14 +1773,9 @@ class Admin extends CI_Controller {
         $html .= 
         <<<HTML
         </table>
-                <div class="footer">
-                    <div class="teacher">
-                        <p>Class Teacher: {$report['teacher']}</p>
+                        
+                        </div>
                     </div>
-                    <div class="principal">
-                        <p>Principal: </p>
-                    </div>
-                    <div style="clear: both;"></div>
                 </div>
             </div>
         </body>
@@ -1791,7 +1794,7 @@ class Admin extends CI_Controller {
 
         // Envoi du PDF au navigateur
         $dompdf->stream("report_card.pdf", array("Attachment" => false));
-        
+        */
     }
 }
 
